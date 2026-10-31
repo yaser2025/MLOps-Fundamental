@@ -44,6 +44,7 @@ pythonpath = ["scripts"]
 
 [dependency-groups]
 dev = [
+    "awscli==1.46.1",
     "pre-commit==4.6.2",
     "pytest==9.1.1",
     "ruff==0.16.7",
