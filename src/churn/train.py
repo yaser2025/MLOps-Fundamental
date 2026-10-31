@@ -42,7 +42,7 @@ def main(config: str) -> dict:
     metrics = {
         "roc_auc": round(roc_auc_score(y_te, proba), 4),
         # "f1": round(f1_score(y_te, proba > 0.5), 4),
-    "f1": round(f1_score(y_te, proba > p["eval"]["threshold"]), 4),
+        "f1": round(f1_score(y_te, proba > p["eval"]["threshold"]), 4),
     }
 
     pathlib.Path("models").mkdir(exist_ok=True)
