@@ -2,3 +2,5 @@ models/
 .env
 .venv/
 __pycache__/
+mlflow.db
+mlruns/

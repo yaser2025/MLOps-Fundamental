@@ -1,26 +1,30 @@
-# This Makefile holds shortcuts; in Session 5 the `train` target is handed over to DVC.
+# This Makefile holds shortcuts; in Session 6 a new target, `runs`, is added.
 # Warning: recipe lines (the commands) must start with a TAB character, not spaces.
 
 # These are names of jobs, not files; .PHONY makes make always run them.
-.PHONY: data train lint test s3-ls
+.PHONY: data train lint test runs s3-ls
 
 # Create the synthetic data in data/raw/churn.csv (versioned with DVC in Session 4).
 data:
 	uv run python scripts/make_dataset.py
 
-# Run the whole pipeline (preprocess, train, evaluate) with DVC. Only stages whose inputs
-# changed run again; the rest come from the cache. Results: models/ and metrics.json.
+# Run the pipeline with DVC. From Session 6 the evaluate stage also logs a run to MLflow
+# every time, so the MLflow server must be running.
 train:
 	uv run dvc repro
 
-# Code quality: errors and style (ruff check), then consistent formatting (ruff format --check).
+# Code quality: ruff check for errors and style, ruff format --check for consistent formatting.
 lint:
 	uv run ruff check .
 	uv run ruff format --check .
 
-# Run the unit tests with pytest in quiet mode (-q).
+# Run the unit tests; they do not need the MLflow server.
 test:
 	uv run pytest -q
+
+# Print a table of the runs of the experiment named churn in the terminal (newest first).
+runs:
+	uv run python scripts/list_runs.py
 
 # List the buckets in the local S3 (SeaweedFS); the keys come from .env.
 s3-ls:

@@ -55,8 +55,8 @@ stages:
       size: 3921
     - path: src/churn/evaluate.py
       hash: md5
-      md5: cef5bf143d2c62fc84ab73a8d66044d8
-      size: 3133
+      md5: 19689145d9a791e48b9591bb04f8525e
+      size: 10768
     params:
       params.yaml:
         eval.threshold: 0.5
