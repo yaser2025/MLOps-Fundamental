@@ -1,0 +1,67 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: uv run python -m churn.preprocess
+    deps:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: e0be77bd53ec0f8feda77f6e779c4a3d
+      size: 320763
+    - path: src/churn/preprocess.py
+      hash: md5
+      md5: 8c75c57a0ab1fcf88cece5b0d8c11ff7
+      size: 3436
+    params:
+      params.yaml:
+        data.seed: 42
+        data.test_size: 0.2
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 06910cf17d38a01ab3ead6e70bec63a2.dir
+      size: 320854
+      nfiles: 2
+  train:
+    cmd: uv run python -m churn.train
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 5523f8487fe8bcc479670831fd12f1bb
+      size: 256488
+    - path: src/churn/train.py
+      hash: md5
+      md5: dc232fe4ae223fbe7ef8cda220f46ad6
+      size: 3871
+    params:
+      params.yaml:
+        train:
+          C: 0.1
+          max_iter: 500
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 006f9dde80dbd224ff5f62f59a7273e1
+      size: 3921
+  evaluate:
+    cmd: uv run python -m churn.evaluate
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 652260658369d5410be4ab6cbc79b29e
+      size: 64366
+    - path: models/model.joblib
+      hash: md5
+      md5: 006f9dde80dbd224ff5f62f59a7273e1
+      size: 3921
+    - path: src/churn/evaluate.py
+      hash: md5
+      md5: cef5bf143d2c62fc84ab73a8d66044d8
+      size: 3133
+    params:
+      params.yaml:
+        eval.threshold: 0.5
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 22b314c7643ec2013caffe7a224ed12c
+      size: 38
