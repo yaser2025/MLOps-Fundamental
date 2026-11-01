@@ -1,0 +1,6 @@
+[core]
+    analytics = false
+    remote = storage
+['remote "storage"']
+    url = s3://dvc/store
+    endpointurl = http://localhost:8333
