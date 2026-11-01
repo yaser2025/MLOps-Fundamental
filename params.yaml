@@ -9,7 +9,7 @@ data:
   seed: 42
 train:
   # inverse regularization strength: smaller C = simpler, more careful model
-  C: 1.0
+  C: 0.1
   # max optimizer steps; too few gives a ConvergenceWarning
   max_iter: 500
 eval:
